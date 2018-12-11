@@ -21,32 +21,32 @@
 <%
 	try{
 		String str=request.getParameter("curStatus");//从表单获得类别
-		/*String account=(String)session.getAttribute("account");		//获取用户名
-		String accountType=(String)session.getAttribute("accountType");	//获取账户类型*/
+		String account=(String)session.getAttribute("username");		//获取用户名
+		String accountType=request.getParameter("accountType");			//获取账户类型*/
+		String acc="";
+		if(accountType.equals("0")){
+			acc="活期账户";
+		}
+		else if(accountType.equals("1")){
+			acc="定期账户";
+		}
+		else{
+			acc="信用卡账户";
+		}
 		Class.forName("com.mysql.jdbc.Driver");  //用class加载动态链接库——驱动程序
 		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ATMSystem", "root", "cptbtptp");
 		Statement stat = conn.createStatement();
-		String account="20150801";
-		String accountType="活期账户";
-		String sql="SELECT *FROM affairs WHERE account='"+account+"' AND accountType='"+accountType+"'";
-		if(str.equals("0")){
-			response.getWriter().write("<script>alert('请选择查询时间范围！');location.href='chooseAffairsDate.jsp'</script>");
+		String sql="SELECT *FROM affairs WHERE account='"+account+"' AND accountType='"+acc+"'";
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+	    String dateNow=df.format(new Date());// new Date()为获取当前系统时间
+		if(str.equals("1")){
+			sql+=" and to_days(NOW())-TO_DAYS(date)<=1";
 		}
-		else{
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-	        String dateNow=df.format(new Date());// new Date()为获取当前系统时间
-			if(str.equals("1")){
-				sql+=" and to_days(NOW())-TO_DAYS(date)<=1";
-			}
-			else if(str.equals("2")){
-				sql+=" and date_sub(CURDATE(),INTERVAL 7 DAY)<=DATE(date)";
-			}
-			else if(str.equals("3")){
-				sql+=" and date_sub(CURDATE(),INTERVAL 30 DAY)<=DATE(date)";
-			}
-			else if(str.equals("4")){
-				
-			}
+		else if(str.equals("2")){
+			sql+=" and date_sub(CURDATE(),INTERVAL 7 DAY)<=DATE(date)";
+		}
+		else if(str.equals("3")){
+			sql+=" and date_sub(CURDATE(),INTERVAL 30 DAY)<=DATE(date)";
 		}
 		ResultSet per = stat.executeQuery(sql);  //用于返回结果
 		%>
@@ -86,6 +86,12 @@
 	<table border="1" align="center"> 
 	<input type = "submit" value="返回"/>
 	</table>
+</form>
+<form action="service.jsp">
+<input type="submit" value="选择其他服务">
+</form>
+<form action="index.jsp">
+<input type="submit" value="退卡">
 </form>
 </body>
 </html>

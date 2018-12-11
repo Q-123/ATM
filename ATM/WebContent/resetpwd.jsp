@@ -17,7 +17,7 @@
 <form action="service.jsp">
 <input type="submit" value="选择其他服务">
 </form>
-<form action="index.js">
+<form action="index.jsp">
 <input type="submit" value="退卡">
 </form>
 <div id="d1" style="color:red">
@@ -44,9 +44,9 @@
 		{
 			<%
 			String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-			String DB_URL = "jdbc:mysql://localhost:3306/atm";
+			String DB_URL = "jdbc:mysql://localhost:3306/atmsystem";
 			String USER = "root";
-			String PASS = "123456";
+			String PASS = "cptbtptp";
 			Connection conn = null;
 			Statement stmt = null;
 		    try {

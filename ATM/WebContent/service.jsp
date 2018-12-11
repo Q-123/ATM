@@ -19,6 +19,9 @@
 <form action="transfer.jsp">
 		<input type="submit" value="转账" />
 </form>
+<form action="chooseAffairsDate.jsp">
+		<input type="submit" value="查询历史事务" />
+</form>
 <form action="resetpwd.jsp">
 		<input type="submit" value="修改密码" />
 </form>

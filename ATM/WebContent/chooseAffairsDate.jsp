@@ -16,10 +16,19 @@
 <body>
 <form action="viewAffairs.jsp" method="post"> 
 	<table border="1" align="center"> 
+	<tr>
+	<td>选择账户</td> 
+	<td>
+	<select name="accountType">     
+  	<option value="0">活期账户</option>     
+  	<option value="1">定期账户</option>
+  	<option value="2">信用卡账户</option>
+	</select>
+	</td>
+	</tr>
 	<td>查询时间</td> 
 	<td>
-	<select name="curStatus">     
-  	<option value="0">----------请选择----------</option>     
+	<select name="curStatus">         
   	<option value="1">一天之内</option>
   	<option value="2">一周之内</option>
   	<option value="3">一月之内</option>
@@ -30,6 +39,12 @@
 	<td><input type = "submit" value="查		询"/></td>
 	</tr>
 	</table>
+</form>
+<form action="service.jsp">
+<input type="submit" value="选择其他服务">
+</form>
+<form action="index.jsp">
+<input type="submit" value="退卡">
 </form>
 </body>
 </html>

@@ -5,9 +5,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-1234
 </body>
-=======
 <%@page import="java.sql.*"%>
 <%@page import="java.util.Vector"%>
 <%@page import="java.sql.Connection"%>
@@ -28,8 +26,8 @@
 <body>
 	<h3>Welcome!</h3>
 	<form action="jump.jsp" method="post">
-		账户<input name="username" type="text" value="20150801"/> <br> 
-		密码<input name="passwd" type="password" value="123456"/> <br> 
+		账户<input name="username" type="text" value=""/> <br> 
+		密码<input name="passwd" type="password" value=""/> <br> 
 		<input type="submit" value="登陆" />
 	</form>
 </body>

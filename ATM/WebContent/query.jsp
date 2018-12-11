@@ -41,9 +41,9 @@
 	{
 		<%
 		String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-		String DB_URL = "jdbc:mysql://localhost:3306/atm";
+		String DB_URL = "jdbc:mysql://localhost:3306/atmsystem";
 		String USER = "root";
-		String PASS = "123456";
+		String PASS = "cptbtptp";
 		Connection conn = null;
 		Statement stmt = null;
 		try

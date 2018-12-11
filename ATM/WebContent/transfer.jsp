@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import="java.sql.*"%>
+<%@page import="java.util.Date" %>
+<%@page import="java.text.SimpleDateFormat" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -73,9 +75,9 @@
 	{
 		<%
 		String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-		String DB_URL = "jdbc:mysql://localhost:3306/atm";
+		String DB_URL = "jdbc:mysql://localhost:3306/atmsystem";
 		String USER = "root";
-		String PASS = "123456";
+		String PASS = "cptbtptp";
 		Connection conn = null;
 		Statement stmt = null;
 		String acctable="", tgttable="", sql="";
@@ -89,31 +91,37 @@
 		    // Open a connection
 		    conn = DriverManager.getConnection(DB_URL, USER, PASS);
 		    stmt = conn.createStatement();
-		    
+		    String acc1="",target="";
 		    // Execute a query
 		    if (acc.equals("1"))
 		    {
 		    	acctable = "current_acc";
+		    	acc1="活期账户";
 		    }
 		    else if (acc.equals("2"))
 		    {
 				acctable = "deposit_acc";
+				acc1="定期账户";
 		    }
 		    else
 		    {
 		    	acctable = "credit_acc";
+		    	acc1="信用卡账户";
 		    }
 		    if (tgt_acc.equals("1"))
 		    {
 		    	tgttable = "current_acc";
+		    	target="活期账户";
 		    }
 		    else if (tgt_acc.equals("2"))
 		    {
 				tgttable = "deposit_acc";
+				target="定期账户";
 		    }
 		    else
 		    {
 		    	tgttable = "credit_acc";
+		    	target="信用卡账户";
 		    }
 		    sql = "select balance from " + acctable + " where username = " + username;
 		    ResultSet per = stmt.executeQuery(sql);
@@ -134,6 +142,15 @@
 		    {
 			    sql = "update " + acctable + " set balance = " + balance + " where username = " + username;
 			   	stmt.executeUpdate(sql);
+			   	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+		        String dateNow=df.format(new Date());// new Date()为获取当前系统时间
+			   	sql = "insert into affairs values('"+username+"','"+acc1+"','转账支出',"+money+",'"+dateNow+"')";	//保存取款历史事务
+		        stmt.executeUpdate(sql);
+		        
+		        dateNow=df.format(new Date());// new Date()为获取当前系统时间
+		        sql = "insert into affairs values('"+username+"','"+target+"','转账收入',"+money+",'"+dateNow+"')";	//保存存款历史事务
+		        stmt.executeUpdate(sql);
+		        
 			   	sql = "update " + tgttable + " set balance = balance + " + mon + " where username = " + username;
 			   	stmt.executeUpdate(sql);
 			   	%>
