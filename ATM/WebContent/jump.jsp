@@ -8,8 +8,6 @@
 <title>Jump</title>
 </head>
 <body>
-<div id="d1">
-</div>
 <%
 	String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	String DB_URL = "jdbc:mysql://localhost:3306/atmsystem";
@@ -38,7 +36,8 @@
 	        {
 	            %>
 	            <script>
-	            	document.getElementById("d1").innerHTML = "账户不存在！";
+	            	alert("账户不存在！");
+	            	location.href="index.jsp";
 	            </script> 
 	            <%
 	        }
@@ -58,7 +57,8 @@
 	                {
 	                    %>
 	                    <script>
-	                    	document.getElementById("d1").innerHTML = "密码错误！";
+	                    	alert("密码错误！");
+	    	            	location.href="index.jsp";
 	                    </script> 
 	                    <%
 	                }
@@ -102,8 +102,5 @@
 	    } // end finally try
 	} // end try
 %>
-<form action="index.jsp" method="post">
-		<input type="submit" value="返回" />
-</form>
 </body>
 </html>
