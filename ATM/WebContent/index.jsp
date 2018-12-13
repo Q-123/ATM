@@ -75,14 +75,14 @@
 					<div class="form-group">
 						<label for="username" class="col-sm-2 control-label">账号</label>
 						<div class="col-sm-8">
-							<input id="username" name="username" type="text" class="form-control" placeholder="请输入账号">
+							<input id="username" name="username" type="text" class="form-control" placeholder="请输入账号" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
 						</div>
 					</div>
 					
 					<div class="form-group">
 						<label for="passwd" class="col-sm-2 control-label">密码</label>
 						<div class="col-sm-8">
-							<input id="passwd" name="passwd" type="password" class="form-control" placeholder="请输入密码">
+							<input id="passwd" name="passwd" type="password" class="form-control" placeholder="请输入密码" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
 						</div>
 					</div>
 		

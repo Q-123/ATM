@@ -3,6 +3,7 @@
 <%@page import="java.sql.*"%>
 <%@page import="java.util.Date" %>
 <%@page import="java.text.SimpleDateFormat" %>
+<% request.setCharacterEncoding("utf-8");  %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -118,7 +119,7 @@
     							<th>
     								<div class="input-group">
             							<span class="input-group-addon">$</span>
-            							<input id="inputMoney" name="inputMoney" type="text" class="form-control">
+            							<input id="inputMoney" name="inputMoney" type="text" class="form-control" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
             							<span class="input-group-addon">.00</span>
         							</div>
     							</th>
@@ -133,27 +134,44 @@
 			</form>
 			<div id="d4">
 			</div>
-<script>
 <%
 	String acc =  request.getParameter("acc");
 	String tgt_acc =  request.getParameter("tgt_acc");
 	String money =  request.getParameter("inputMoney");
+	if (acc == null)
+	{
+		acc = "0";
+		tgt_acc = "0";
+		money = "0";
+	}
 %>
+<script>
 	var acc = <%=acc%>;
 	var tgt_acc = <%=tgt_acc%>;
 	var money = <%=money%>;
-	money = money.toString();
-	if(acc == tgt_acc)
+	if(acc != 0)
 	{
-		alert("源账户不能与目标账户相同！");
+		if (acc == tgt_acc)
+		{
+			alert("源账户不能与目标账户相同！");
+			location.href="transfer.jsp";
+		}
+		else if (money == 0)
+		{
+			alert("取款金额不能为零！");
+			location.href="transfer.jsp";
+		}
 	}
-	if (acc != null && tgt_acc != null && money != 0 && acc != tgt_acc)
+</script>
+<%
+	
+	int mon = Integer.valueOf(money);
+	if (acc != "0" && !acc.equals(tgt_acc) && mon > 0 && mon <= 10000)
 	{
-		<%
 		String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-		String DB_URL = "jdbc:mysql://localhost:3306/atmsystem";
+		String DB_URL = "jdbc:mysql://localhost:3306/atmsystem?useUnicode=true&characterEncoding=UTF-8";
 		String USER = "root";
-		String PASS = "cptbtptp";
+		String PASS = "123456";
 		Connection conn = null;
 		Statement stmt = null;
 		String acctable="", tgttable="", sql="";
@@ -206,12 +224,15 @@
 		       balance = per.getInt("balance");
 		    }
 		    per.close();
-		    int mon = Integer.valueOf(money);
+		    
 		    balance -= 1.01*mon;
 		    if (balance < 0)
 		    {
 		    	%>
+		    	<script>
 		    	alert("当前账户余额不足!");
+		    	location.href="transfer.jsp";
+		    	</script>
 		    	<%
 		    }
 		    else
@@ -230,8 +251,10 @@
 			   	sql = "update " + tgttable + " set balance = balance + " + mon + " where username = " + username;
 			   	stmt.executeUpdate(sql);
 			   	%>
+			   	<script>
 		    	alert("转账成功！");
 		    	location.href="transfer.jsp";
+		    	</script>
 		    	<%
 		    }
 		    stmt.close();
@@ -268,9 +291,9 @@
 		        se.printStackTrace();
 		    } // end finally try
 		} // end try
-		%>
 	}
-</script>
+
+%>
 		</div>
 	</div>
 	

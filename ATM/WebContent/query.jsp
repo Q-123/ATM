@@ -98,7 +98,7 @@
 		String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 		String DB_URL = "jdbc:mysql://localhost:3306/atmsystem";
 		String USER = "root";
-		String PASS = "cptbtptp";
+		String PASS = "123456";
 		Connection conn = null;
 		Statement stmt = null;
 		try

@@ -22,30 +22,38 @@
 		    rules: {
 		      oldPassword: {
 		    	required: true,
-		    	minlength: 6
+		    	minlength: 6,
+		    	maxlength: 6
 		      },
 		      password: {
 		        required: true,
-		        minlength: 6
+		        minlength: 6,
+		        maxlength: 6,
+		        equalTo: "#oldPassword"
 		      },
 		      confirm_password: {
 		        required: true,
 		        minlength: 6,
+		        maxlength: 6,
 		        equalTo: "#password"
 		      }
 		    },
 		    messages: {
 		      oldPassword: {
 			    required: "请输入密码",
-			    minlength: "密码长度不能小于 6 个数字"
+			    maxlength: "密码长度为6位数字",
+			    minlength: "密码长度为6位数字"
 			  },
 		      password: {
 		        required: "请输入密码",
-		        minlength: "密码长度不能小于 6 个数字"
+		        maxlength: "密码长度为6位数字",
+		        minlength: "密码长度为6位数字",
+		        equalTo: "新密码不能与旧密码相同"
 		      },
 		      confirm_password: {
 		        required: "请输入密码",
-		        minlength: "密码长度不能小于 6 个数字",
+		        maxlength: "密码长度为6位数字",
+		        minlength: "密码长度为6位数字",
 		        equalTo: "两次密码输入不一致"
 		      }
 		    }
@@ -109,21 +117,21 @@
 				<div class="form-group">
 					<label for="oldPassword" class="col-sm-2 control-label">旧密码</label>
 					<div class="col-sm-8">
-						<input id="oldPassword" name="oldPassword" type="password" class="form-control" placeholder="请输入用户密码">
+						<input id="oldPassword" name="oldPassword" type="password" class="form-control" placeholder="请输入用户密码" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
 					</div>
 				</div>
 					
 				<div class="form-group">
 					<label for="password" class="col-sm-2 control-label">新密码</label>
 					<div class="col-sm-8">
-						<input id="password" name="password" type="password" class="form-control" placeholder="请输入新密码">
+						<input id="password" name="password" type="password" class="form-control" placeholder="请输入新密码" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
 					</div>
 				</div>
 					
 				<div class="form-group">
 					<label for="confirm_password" class="col-sm-2 control-label">确认密码</label>
 						<div class="col-sm-8">
-							<input id="confirm_password" name="confirm_password" type="password" class="form-control" placeholder="请确认密码">
+							<input id="confirm_password" name="confirm_password" type="password" class="form-control" placeholder="请确认密码" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
 						</div>
 					</div>
 		
@@ -144,104 +152,104 @@
 				<div id="d1" style="color:red">
 				</div>
 <%
-	String oldPasswd = request.getParameter("oldPassword");
-	String passwd = request.getParameter("password");
-	//String username = (String)session.getAttribute("username");
-	
-	String username = "20150801";
-%>
-<script>
-	var passwd = <%=passwd%>;
-	if (passwd == null)
+String oldPasswd = request.getParameter("oldPassword");
+String passwd = request.getParameter("password");
+//String username = (String)session.getAttribute("username");
+if (oldPasswd != null && passwd != null)
+{
+	if (oldPasswd.equals(passwd))
 	{
-		//document.getElementById("d1").innerHTML = "请输入六位密码";
-	}	
+		%>
+    	<script type="text/javascript">
+		    alert("新密码与旧密码不能相同");
+		    location.href="resetpwd.jsp";
+		</script>
+    	<%
+	}
 	else
 	{
-		passwd = passwd.toString();
-		if(passwd.length != 6)
+		String username = "20150801";
+		String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+		String DB_URL = "jdbc:mysql://localhost:3306/atmsystem";
+		String USER = "root";
+		String PASS = "123456";
+		Connection conn = null;
+		Statement stmt = null;
+		try
 		{
-			//document.getElementById("d1").innerHTML = "密码长度错误！"
+		    // Register JDBC driver
+		    Class.forName(JDBC_DRIVER);
+
+		    // Open a connection
+		    conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+		    // Execute a query
+		    stmt = conn.createStatement();
+
+		    String sql;
+		    sql = "select passwd from users where username = '" + username + "'";
+		    ResultSet per = stmt.executeQuery(sql);
+		    per.first();
+		    String p = per.getString(1);
+		    if (p.equals(oldPasswd))
+		    {
+		        sql = "update users set passwd = '" + passwd + "' where username = '" + username + "'";
+		        stmt.executeUpdate(sql);
+		        %>
+		    	<script type="text/javascript">
+				    alert("修改密码成功");
+				    location.href="resetpwd.jsp";
+				</script>
+		    	<%
+		    }
+		    else
+		    {
+		    	%>
+		    	<script type="text/javascript">
+				    alert("旧密码输入错误");
+				    location.href="resetpwd.jsp";
+				</script>
+		    	<%
+		    }
+		    stmt.close();
+		    conn.close();
 		}
-		else
+		catch (SQLException se)
 		{
-			<%
-			String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-			String DB_URL = "jdbc:mysql://localhost:3306/atmsystem";
-			String USER = "root";
-			String PASS = "cptbtptp";
-			Connection conn = null;
-			Statement stmt = null;
-		    try {
-		        // Register JDBC driver
-		        Class.forName(JDBC_DRIVER);
-
-		        // Open a connection
-		        conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-		        // Execute a query
-		        stmt = conn.createStatement();
-		        
-		        String sql;
-		        sql = "select passwd from users where username = '" +username+"'";
-		        ResultSet per = stmt.executeQuery(sql);
-		        per.first();
-		        String p=per.getString(1);
-		        if(p.equals(oldPasswd)){
-		        	sql = "update users set passwd = '" + passwd + "' where username = '" + username+"'";
-			        int n = stmt.executeUpdate(sql);
-			        if (n == 1)
-			        { 
-			        	%>
-			        	alert("密码修改成功！");
-			        	location.href="index.jsp";
-			        	<%
-			        }
-			        else
-			        {
-			        	%>
-			        	alert("密码修改失败！");
-			        	<%
-			        }
-		        }
-		        else{
-		        	%>
-		        	alert("原密码错误！");
-		        	<%
-		        }
-		        
-		        stmt.close();
-		        conn.close();
-		    } catch (SQLException se) {
-		         // Handle errors for JDBC
-		         %>alert("1！");<%
-		         se.printStackTrace();
-		    } catch (Exception e) {
-		         // Handle errors for Class.forName
-		         %>alert("2！");<%
-		         e.printStackTrace();
-		    } finally {
-		         // finally block used to close resources
-		         try {
-		            if (stmt != null)
-		                stmt.close();
-		         } catch (SQLException se2) {
-		         } // nothing we can do
-		         try {
-		            if (conn != null)
-		                 conn.close();
-		         } catch (SQLException se) {
-		             se.printStackTrace();
-		         } // end finally try
-		    } // end try
-			%>
-			
+		    // Handle errors for JDBC
+		    se.printStackTrace();
 		}
+		catch (Exception e)
+		{
+		    // Handle errors for Class.forName
+		    e.printStackTrace();
+		}
+		finally
+		{
+		    // finally block used to close resources
+		    try
+		    {
+		        if (stmt != null)
+		            stmt.close();
+		    }
+		    catch (SQLException se2)
+		    {
+		    } // nothing we can do
+		    try
+		    {
+		        if (conn != null)
+		            conn.close();
+		    }
+		    catch (SQLException se)
+		    {
+		        se.printStackTrace();
+		    } // end finally try
+		} // end try
 	}
-		
-</script>
-			</div>
-		</div>
+
+}
+
+%>
 	
 </body>
 </html>

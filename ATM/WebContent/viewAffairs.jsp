@@ -92,7 +92,8 @@
 			acc="信用卡账户";
 		}
 		Class.forName("com.mysql.jdbc.Driver");  //用class加载动态链接库——驱动程序
-		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ATMSystem", "root", "cptbtptp");
+		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ATMSystem?useUnicode=true&characterEncoding=UTF-8", 
+													  "root", "123456");
 		Statement stat = conn.createStatement();
 		String sql="SELECT *FROM affairs WHERE account='"+account+"' AND accountType='"+acc+"'";
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式

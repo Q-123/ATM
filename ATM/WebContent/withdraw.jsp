@@ -3,6 +3,7 @@
 <%@page import="java.sql.*"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>
+<% request.setCharacterEncoding("utf-8");  %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -122,7 +123,7 @@
     							<th>
     								<div class="input-group">
             							<span class="input-group-addon">$</span>
-            							<input id="money" name="money" type="text" class="form-control" placeholder="最大金额不能超过2000元">
+            							<input id="money" name="money" type="text" class="form-control" placeholder="最大金额不能超过2000元" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
             							<span class="input-group-addon">.00</span>
         							</div>
     							</th>
@@ -143,20 +144,25 @@ String acc =  request.getParameter("acc");
 String money = request.getParameter("money");
 
 if (acc == null)
-	acc = "1";
+	acc = "0";
 if (money == null)
 	money = "0";
 String username = (String)session.getAttribute("username");
 %>
 var acc = <%=acc%>;
 var money = <%=money%>;
+if (acc != 0)
+{
 	if (money == 0){
-	
+		alert("取款金额不能为零!");
+		location.href="withdraw.jsp";
 	}
 	else if (money % 100 != 0){
-		
 		alert("取款金额必须是整百!");
+		location.href="withdraw.jsp";
 	}
+}
+	
 </script>
 <%
 	int mon = Integer.parseInt(money);
@@ -164,9 +170,9 @@ var money = <%=money%>;
 	{
 		
 		String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-		String DB_URL = "jdbc:mysql://localhost:3306/atmsystem";
+		String DB_URL = "jdbc:mysql://localhost:3306/atmsystem?useUnicode=true&characterEncoding=UTF-8";
 		String USER = "root";
-		String PASS = "cptbtptp";
+		String PASS = "123456";
 		Connection conn = null;
 		Statement stmt = null;
 		String acctable="", sql="";
@@ -208,6 +214,7 @@ var money = <%=money%>;
 		    	%>
 		    	<script type="text/javascript">
 		    		alert("超出一天最大取款累计金额5000元!");
+		    		location.href="withdraw.jsp";
 		    	</script>
 				<%
 			}
@@ -235,6 +242,7 @@ var money = <%=money%>;
 			 		    %>
 			 		    <script type="text/javascript">
 							alert("当前账户余额不足!");
+							location.href="withdraw.jsp";
 						</script>
 						<%
 			 		}
@@ -283,6 +291,7 @@ var money = <%=money%>;
 			 		    %>
 						<script type="text/javascript">
 							alert("当前账户余额不足!");
+							location.href="withdraw.jsp";
 						</script>
 						<%
 			 		}
@@ -319,6 +328,7 @@ var money = <%=money%>;
 			 	    	%>
 						<script type="text/javascript">
 							alert("当前账户余额不足!");
+							location.href="withdraw.jsp";
 						</script>
 						<%
 			 	    }
