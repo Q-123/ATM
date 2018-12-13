@@ -89,7 +89,7 @@
 			<!--查询历史记录-->
 			<h3 class="text-danger" style="text-align:center"><strong>账户转账</strong></h3>
 			<br>
-			<form class="form-horizontal" id="tranferForm" role="form">
+			<form class="form-horizontal" id="tranferForm" role="form" method="post">
 				<table class="table table-bordered" align="center">
   					<div class="form-group">
   						<thead>

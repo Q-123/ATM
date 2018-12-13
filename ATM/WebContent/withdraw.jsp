@@ -93,7 +93,7 @@
 			<!--查询历史记录-->
 			<h3 class="text-warning" style="text-align:center"><strong>用户取款</strong></h3>
 			<br>
-			<form class="form-horizontal" id="withdrawForm" role="form">
+			<form class="form-horizontal" id="withdrawForm" role="form" method="post">
 				<table class="table table-bordered" align="center">
   					<div class="form-group">
   						<thead>

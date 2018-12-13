@@ -69,7 +69,7 @@
   		<div class="row">
     		<div class="text-center">
     			<br><br>
-				<form class="form-horizontal" id="loginForm" role="form" action="jump.jsp">
+				<form class="form-horizontal" id="loginForm" role="form" action="jump.jsp" method="post">
 					<h2 class="text-info" style="text-align:center"><strong>系统登录</strong></h2>
 					<br><br>
 					<div class="form-group">

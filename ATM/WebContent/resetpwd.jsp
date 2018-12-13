@@ -111,7 +111,7 @@
 		</div>
 		
 		<div class="col-sm-8">
-			<form class="form-horizontal" id="signupForm" role="form" >
+			<form class="form-horizontal" id="signupForm" role="form" method="post">
 			<h3 class="text-info" style="text-align:center"><strong>修改密码</strong></h3>
 			<br><br>
 				<div class="form-group">
